@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VoiceStack Agent App — Visual Before / After</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F2F3F7; --surface:#fff; --ink:#1C2030; --ink2:#474F60; --muted:#7A8290;
+  --hair:#E9ECF1; --indigo:#4A3CE1; --indigo-text:#4334C9; --indigo-tint:#ECEBFB; --indigo-tint-2:#F4F3FC;
+  --green:#2BB673; --green-text:#1C7A4D; --green-tint:#E4F5EC;
+  --coral:#E5484D; --coral-text:#C6373C; --coral-tint:#FBE3E4;
+  --amber-text:#B45309; --amber-tint:#FDF1DD;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);font-family:Inter,system-ui,sans-serif;color:var(--ink2);font-size:15px;line-height:1.55}
+.wrap{max-width:1560px;margin:0 auto;padding:0 28px 90px}
+/* hero */
+.hero{background:#171039;color:#fff;border-radius:0 0 22px 22px;padding:58px 46px 50px;margin-bottom:40px}
+.hero .kick{font:700 12px Manrope;letter-spacing:.16em;color:#9A8FEF;text-transform:uppercase}
+.hero h1{font:800 40px/1.15 Manrope;margin:14px 0 16px;color:#fff;max-width:900px}
+.hero p{color:#C9C4F1;max-width:860px;font-size:16.5px}
+.hero .meta{margin-top:22px;font-size:12.5px;color:#8E86D8}
+.legendbar{display:flex;gap:14px;margin:26px 0 0;flex-wrap:wrap}
+.lg{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:7px 15px;font-size:13px;color:#DDD9F6}
+.dot{width:19px;height:19px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font:700 11px Inter;color:#fff}
+.dot.c{background:var(--coral)} .dot.g{background:var(--green)}
+/* pinned page nav */
+.tocbar{position:sticky;top:0;z-index:50;background:rgba(242,243,247,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--hair);margin:0 -28px 46px;padding:10px 28px}
+.toc{display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;scrollbar-width:none}
+.toc::-webkit-scrollbar{display:none}
+.toc a{flex:0 0 auto;text-decoration:none;background:var(--surface);border:1.5px solid var(--hair);color:var(--indigo-text);font:600 13px Inter;padding:8px 14px;border-radius:999px;white-space:nowrap;transition:background .15s,border-color .15s}
+.toc a:hover{background:var(--indigo-tint)}
+.toc a.on{background:var(--indigo);border-color:var(--indigo);color:#fff}
+/* section */
+.sec{margin:0 0 74px}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+.sec-num{font:800 13px Manrope;color:var(--indigo);letter-spacing:.08em}
+.sec h2{font:800 27px Manrope;color:var(--ink)}
+.sec .blurb{max-width:980px;margin:6px 0 22px;font-size:15.5px}
+/* shot block */
+.shot{background:var(--surface);border:1px solid var(--hair);border-radius:16px;padding:18px 18px 6px;margin-bottom:18px;box-shadow:0 1px 2px rgba(23,16,57,.04)}
+.shot .tag{display:inline-flex;align-items:center;gap:8px;font:700 12px Manrope;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:999px;margin-bottom:14px}
+.shot.before .tag{background:var(--coral-tint);color:var(--coral-text)}
+.shot.after  .tag{background:var(--green-tint);color:var(--green-text)}
+.shot .tag small{font:500 11px Inter;letter-spacing:0;text-transform:none;opacity:.8}
+.imgwrap{position:relative;border:1px solid var(--hair);border-radius:10px;overflow:hidden}
+.imgwrap img{display:block;width:100%;height:auto}
+/* markers */
+.mk{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:700 13px Inter;color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.9),0 2px 8px rgba(0,0,0,.35);cursor:default;z-index:3}
+.shot.before .mk{background:var(--coral)}
+.shot.after  .mk{background:var(--green)}
+.mk::after{content:'';position:absolute;inset:-7px;border-radius:50%;border:2px solid currentColor;opacity:.35}
+.shot.before .mk::after{color:var(--coral)} .shot.after .mk::after{color:var(--green)}
+/* legend */
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:6px 26px;padding:16px 6px 14px}
+.legend .li{display:flex;gap:11px;align-items:flex-start;font-size:14px}
+.legend .li b{color:var(--ink)}
+.legend .dot{flex:0 0 auto;margin-top:1px}
+/* strategy strip */
+.why{background:var(--amber-tint);border:1px solid #F0DCB8;border-radius:12px;padding:13px 18px;font-size:14.5px;color:#8a5a10;margin-top:4px}
+.why b{color:var(--amber-text)}
+.nobefore{background:var(--indigo-tint-2);border:1px dashed #D9D5F7;border-radius:12px;padding:18px 22px;color:var(--indigo-text);font-size:14.5px;margin-bottom:18px}
+footer{border-top:1px solid var(--hair);margin-top:30px;padding-top:18px;font-size:12.5px;color:var(--muted)}
+@media (max-width:900px){.hero h1{font-size:30px}.legend{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="wrap" style="padding:0">
+    <div class="kick">VoiceStack Agent App · Visual UX Comparison</div>
+    <h1>Every screen, side by side:<br>what was broken, and how the redesign fixes it</h1>
+    <p>Real, full-width captures on both sides — the current VoiceStack 1.14.7 desktop app on top, the working v2 prototype (running on live tenant data) below. Numbered markers point at the exact spots where the design does its work.</p>
+    <div class="legendbar">
+      <span class="lg"><span class="dot c">1</span> Before — problem in the current app</span>
+      <span class="lg"><span class="dot g">1</span> After — the design response</span>
+    </div>
+    <div class="meta">July 2026 · Agent App Revamp · brightsmiles demo tenant · Prepared by Krishnan × Claude</div>
+  </div>
+</div>
+<div class="wrap">
+  <div class="tocbar"><nav class="toc" id="toc"></nav></div>
+  <div id="doc"></div>
+  <footer>“Before” — VoiceStack 1.14.7 (Electron), captured 5 Jul 2026. “After” — v2 prototype (voicestack-data.html) rendered at 1300×800 — matching the desktop app’s window scale against recorded live-tenant API responses. Companion document: <b>ux-strategy-before-after.pdf</b> (screen-by-screen strategy rationale).</footer>
+</div>
+
+<script>
+var S = [
+{ id:'landing', num:'01', title:'The landing page — from feed to focus',
+  blurb:'The app used to open into a chronological Activity feed: everything that happened, newest first, with no sense of what deserves attention. The redesign opens into “Things to do” — the agent’s morning, already prioritized.',
+  before:{ img:'compare/before/activity-feed.png',
+    mks:[[30,10.5,'Tabs are lenses (Voicemail / Missed / To Do AI / VoiceBot) — they change what you see, never what matters first.'],
+         [52,21,'Every event rendered with equal weight: a feedback voicemail looks exactly as urgent as a booking request.'],
+         [7.5,29,'A four-digit nav badge is the app’s only ranking signal — and it reads as noise, not priority.'],
+         [92,15,'Per-card icon actions, no progress feedback: the feed never tells you that you are done.']]},
+  after:{ img:'compare/after/01-things-to-do.png',
+    mks:[[21,10.5,'A greeting and the date — the day starts addressed to a person, not appended to a log.'],
+         [38,27,'Each queue is one sentence: live count + who is in it + why it matters (“3 existing patients expecting a call back — start there”).'],
+         [67,27,'One tap lands inside the right queue, already filtered to the same items.'],
+         [84,23,'“Today so far” — calls handled, missed today, in your queue: visible progress.'],
+         [84,45,'Money pipeline mini-board with a one-tap jump into the full pipeline.'],
+         [8,30,'Navigation grouped by intent — MAIN · CONVERSATIONS · AI & FOLLOW-UP · DIRECTORY — with subtle badges loaded at first paint.']]},
+  why:'The most expensive decision of the day — <b>“what first?”</b> — is now made by the product, while the person stays in charge.'},
+
+{ id:'call-history', num:'02', title:'Call History',
+  blurb:'The investigation surface. Before: a dense log where every row looked the same and key columns lived off-screen. After: a triaged ledger where identity, status and actions sit inside the row.',
+  before:{ img:'compare/before/call-history.png',
+    mks:[[23,15.5,'Lens tabs with a lone count on “Missed Calls 10” — triage exists, but only for one slice.'],
+         [63,29,'Contact type as a flat table column — identity requires reading every row.'],
+         [80,29,'“Short Missed” status buried mid-table with identical styling everywhere.'],
+         [96,34,'Duration, voicemail and more pushed off-screen — a horizontal scrollbar is part of the core workflow.']]},
+  after:{ img:'compare/after/03-call-history.png',
+    mks:[[24,11,'Title + “Live” badge — the data source is visible and honest.'],
+         [28,21,'Counted triage tabs: All / Inbound / Outbound / Missed / Memo Pending — the log is pre-sorted into questions.'],
+         [56,34,'EXISTING / NEW tag beside every caller — the first question a front desk asks, answered at a glance.'],
+         [48.5,42,'Call / text / more — inline on the row, no kebab excavation.'],
+         [81,34,'The full status vocabulary, colored by severity: Pre-queue drop and Missed (coral), Short missed (amber), Not connected (grey), Answered (green) — the story of each call without opening it.'],
+         [86,12,'Date range and filters live in the header band; search is always visible.'],
+         [80,95,'Honest paging: “Showing 51–60 of 60” with the page number lit — no infinite-scroll disorientation.']]},
+  why:'Call History set the shared grammar — header band, tabs with counts, identity tags, inline actions — that every other screen now speaks.'},
+
+{ id:'voicemails', num:'03', title:'Voicemails',
+  blurb:'The revenue-leak queue. Before: a table that demanded a click-and-listen per row. After: a worklist where reading replaces listening and the callback is one tap.',
+  before:{ img:'compare/before/voicemails.png',
+    mks:[[26,10.5,'Three levels of filters (type dropdown, date, stage tabs) before the first voicemail.'],
+         [48,40,'A row per voicemail — content invisible; you must open and listen to know if it matters.'],
+         [76,40,'Internal vocabulary in agent-facing columns: LSVM, Unpaid, SVM.'],
+         [90,38,'“NEW” tag driven by the contact-type field — frequently wrong, so agents stop trusting it.']]},
+  after:{ img:'compare/after/04-voicemails.png',
+    mks:[[27,21,'Identity strip: Appointments related (amber) · Existing patients · Unknown — revenue triage in one row of chips.'],
+         [50,52,'Full transcript on the card — triage by reading; listening becomes optional.'],
+         [50,59.5,'Ready waveform with click-to-seek and playback speed.'],
+         [27,45.5,'Aging chip (“Auto-ignores in 13d”) turns amber, then coral, as the deadline nears.'],
+         [85,45.5,'Solid-indigo call-back is the primary action; text / task / done sit beside it.'],
+         [91,11,'One shared date-range dropdown drives the list, tabs and counts together.']]},
+  why:'Processing ten voicemails went from ten listens to <b>one read-through with two or three targeted listens</b>.'},
+
+{ id:'missed-calls', num:'04', title:'Missed Calls',
+  blurb:'Before: the same stage-first table as voicemails, organized by workflow state. After: organized by the only question that matters — who gets called back first?',
+  before:{ img:'compare/before/missed-calls.png',
+    mks:[[26,16,'“Unresponded 10” is a stage, not a person — the queue ranks by process state.'],
+         [56,36,'Number + codes; knowing who the caller is means scanning more columns.'],
+         [79,36,'“Short Missed” ten times over — nothing separates the callback that makes money.']]},
+  after:{ img:'compare/after/05-missed-calls.png',
+    mks:[[27,21,'The strip ranks by relationship: Existing patients (3) · New patients (1) · Unknown numbers (6).'],
+         [26,35,'Group headers turn the list into a working order: existing first, then new, then unknown.'],
+         [30,45.5,'“Rang 2s · 2 calls” + aging chip — urgency is computed and shown, not implied.'],
+         [90,45.5,'Call back / text / task / block / done — the whole loop closes on the card.']]},
+  why:'Every missed existing patient is bookable revenue; the design makes them impossible to miss.'},
+
+{ id:'texts', num:'05', title:'Text Messages',
+  blurb:'Before: a functional but sterile two-pane tool. After: messaging that borrows the visual language your team already knows from their own phones.',
+  before:{ img:'compare/before/text-messages.png',
+    mks:[[31,14,'Flat room list — bots, patients and unknown numbers all look identical.'],
+         [68,52,'Thread without avatars, day dividers or delivery ticks — hard to scan who said what, when.'],
+         [80,14,'Practice-line context squeezed into a corner pill.']]},
+  after:{ img:'compare/after/06-text-messages.png',
+    mks:[[18,23,'Counted tabs — All / Unread / Unresponded / Bot Engaged — plus outcome chips (Fulfilled / In progress) on rooms.'],
+         [21.5,31,'Colored initial avatars with bot corner-badges — senders are tellable apart at a glance.'],
+         [83,47,'Bot/system messages in tinted indigo with “Voicebot · Automated” attribution; patient left, practice right.'],
+         [60,11,'Header pairs the patient with the practice line that owns the conversation.'],
+         [74,95.5,'A live banner when a bot session is active — the agent knows why input is disabled.']]},
+  why:'Familiarity is a feature: a 55-year-old front desk agent already knows this UI — <b>training cost approaches zero</b>.'},
+
+{ id:'tasks', num:'06', title:'Tasks (was “To Do”)',
+  blurb:'Before: a to-do list where free-floating notes and P-codes crowded out the actual work. After: a patient-centered task manager where urgency leads.',
+  before:{ img:'compare/before/todo.png',
+    mks:[[24,10.5,'Notes tab first; “Overdue 27” — the real fire — sits mid-row, un-highlighted.'],
+         [43,26,'Notes without patients, dates or owners mixed into the same queue as clinical follow-ups.'],
+         [40,54,'Coaching notes (“Always be empathetic”) share space with time-critical work.']]},
+  after:{ img:'compare/after/02-tasks.png',
+    mks:[[25,21,'Urgency strip: 27 Overdue (coral) · Today (amber) · Upcoming · Notes — tappable filters, coral first.'],
+         [27,40,'The patient leads the row and clicks through to their Activity.'],
+         [43,42,'Overdue math anchored to end-of-day; dates go red only when truly late.'],
+         [55,42,'“View call” jumps to the source call with the task sitting in its rail.'],
+         [91,11,'＋ New task: natural due dates, priority words, assignee search, optional patient link — posting to the real API.']]},
+  why:'Tasks stopped being a parallel system — they attach to patients and calls, so finishing one lands you where the work is.'},
+
+{ id:'fax', num:'07', title:'Fax',
+  blurb:'Before: a document table whose most useful facts sat off-screen. After: a two-line inbox with the unread filter the desk always wanted, and notes in plain sight.',
+  before:{ img:'compare/before/fax.png',
+    mks:[[30,20,'A wide table for four documents — delivery detail and notes live off-screen to the right.'],
+         [42,26,'Everything else (mark unread, ignore, forward, download, notes) buried in the kebab.'],
+         [57,26,'Read/Unread is shown per row — but there is no way to filter by it.']]},
+  after:{ img:'compare/after/07-fax.png',
+    mks:[[25,21,'Read-state strip — 3 Unread (indigo) · 3 Read · Ignored — filtering server-side.'],
+         [28,37.5,'Sender → location → destination line, pages, and state pills on a two-line card.'],
+         [31,42.5,'Notes inline: “2 notes / Add note” opens the authored, timestamped note thread (verified against the real backend).'],
+         [89,42.5,'Mark-read and ignore as one-tap actions; View PDF right where the eye lands.']]},
+  why:'Insurance paperwork is deadline-driven — unread-first triage plus visible notes is the difference between a clean claim and a resubmission.'},
+
+{ id:'neo', num:'08', title:'Neo AI (was “Bot Assisted Calls”)',
+  blurb:'The AI’s handoff queue. Before: four tabs and three dropdowns treating every bot call alike. After: buckets organized by how much human effort each call still needs.',
+  before:{ img:'compare/before/bot-assisted.png',
+    mks:[[30,11,'Four type tabs × Open/Closed × three dropdowns — configuration before content.'],
+         [50,36,'Rich IQ summaries, but the follow-up queue — the only place humans act — has no special status.'],
+         [92,29,'Actions reduced to small icons; “mark followed up” is a bare check.']]},
+  after:{ img:'compare/after/08-neo-ai.png',
+    mks:[[28,21,'Buckets by human effort: 5 Need a human follow-up (amber, default) · Bot handled end-to-end · Transferred to agent.'],
+         [26,42.5,'Amber wash + “Bot unfulfilled” / “Missed by bot” pills — the worst items pull the eye first.'],
+         [50,49,'Summary at readable 14px with outcome + reason pills underneath.'],
+         [91,42.5,'Call, text, task and ✓ mark-followed-up inline — verified live against the real API.'],
+         [73,28.5,'Searchable bot filter + date range, the same pattern as every other queue.']]},
+  why:'Every unfulfilled bot call is a patient who tried to book and failed. The queue now behaves like the safety net it is.'},
+
+{ id:'opps-list', num:'09', title:'Opportunities — the working queue',
+  blurb:'The CRM heart, deep comparison #1. Before: a table with five dropdowns and hidden reasoning. After: a value-first queue where the AI explains every score and the agent works leads without leaving.',
+  before:{ img:'compare/before/opps-list.png',
+    mks:[[30,16,'Probability chips + treatment chips + five dropdowns (Reason / Insurance / Direction / Contact / Lead) — powerful, unlearnable.'],
+         [37,26,'Stage-summary cards double as filters — review furniture sitting on top of the working queue.'],
+         [88,36,'A % pill with no explanation — the AI’s reasoning is locked in the detail panel.'],
+         [56,36,'Assignee and state as table columns; changing either means the kebab.']]},
+  after:{ img:'compare/after/09-opportunities-list.png',
+    mks:[[30,21,'The 2×2 the practice thinks in: New Patient Treatments (10) · New Patient Cleaning (33) · Existing Treatments (4) · Existing Cleaning (9).'],
+         [23,35.5,'HIGH POTENTIAL band — sorted by score; the list holds only open stages (closed work lives in the Pipeline view).'],
+         [26,47,'Score ring + stage pill (click to change) + Hot lead + reason — the card is the CRM.'],
+         [41,53.5,'The AI’s why-line in plain language: “The patient is in pain and agreed to a callback within 20 minutes.”'],
+         [90,47,'Call / text / task / ✓ convert / ⊘ ignore — every write wired to the real PUT APIs.']]},
+  why:'The highest-value call of the day is now also <b>the most obvious one</b>.'},
+
+{ id:'opps-pipeline', num:'10', title:'Opportunities — the pipeline view',
+  blurb:'Deep comparison #2: the manager’s view. Before: the kanban carried the whole module. After: a purpose-built review board with pinned headers, funnel percentages and drag-to-move that persists.',
+  before:{ img:'compare/before/opps-board.png',
+    mks:[[33,17,'The full filter wall repeats here — probability, treatments, five dropdowns, saved views.'],
+         [50,21,'Stage summary cards + columns — the same information twice.'],
+         [56,50,'Cards: number, %, tags, assignee — no last-activity recency, initials only.']]},
+  after:{ img:'compare/after/10-opportunities-pipeline.png',
+    mks:[[32,29.5,'One summary sentence with colored Manrope numbers: 168 in the pipeline · 56 to follow up · 53 converted (32%).'],
+         [26,38,'Pinned column headers with the share-%% as a highlighted pill — the funnel reads left to right.'],
+         [52,62,'Cards carry treatments, lead pill, full assignee name and “Nd ago” recency; drag between stages persists via the real API.'],
+         [72,29.5,'Assignee combobox + search — the only two filters a review board needs.']]},
+  why:'List = <b>work</b>, Pipeline = <b>review</b>. Splitting the two intents let each view drop half its chrome.'},
+
+{ id:'view-call', num:'11', title:'View Call — deep comparison',
+  blurb:'The same call on both sides: Jenny Ott’s 2:44 missed call from Jan 29 — a new patient with a toothache who didn’t book over price. Before: transcript-in-a-panel with insights scattered across tabs. After: a decision cockpit built around the exact same recording.',
+  before:{ img:'compare/before/view-call.png',
+    mks:[[45,28,'A single flat waveform — no channels, no markers; 2:44 of audio is 2:44 of listening.'],
+         [63,36,'The IQ summary crammed into a strip and cut off mid-sentence; “Attach Memo” gets equal billing.'],
+         [40,44,'Transcript / To Do / Opportunity as tabs — the 80% score, follow-up cues and treatment detail each live one click away.'],
+         [62,66,'The 80/100 gauge stands alone — the why (price concern) sits in a different panel.'],
+         [86,52,'The key insight — “cost is a significant factor in their decision not to book” — rendered as one more grey box on the right.']]},
+  after:{ img:'compare/after/13-view-call.png',
+    mks:[[38,13.5,'Journey card: Caller → Dialed → Answered by (bot transfer tree) → Location & time — the routing story in one row.'],
+         [32,24,'Pinned hero: “Hot opportunity · 80% likely to convert within 1 day” + the Price Concern pill + the full summary — with Follow up now right there.'],
+         [42,63,'Dual-lane waveform decoded from this call’s real audio: agent (indigo) above, patient (green) below.'],
+         [49,54,'“✦ 5 key moments” — deterministic flags (uncertainty, urgent need, wants to book) pinned to the exact seconds, no LLM.'],
+         [27,87,'Speaker-chipped transcript — click any turn to seek the audio.'],
+         [88,17,'Patient rail: New patient tag, quick actions, and the opportunity stage — changeable HubSpot-style without leaving the call.'],
+         [88,42,'The score ring with its reasons beside it: High intent · within 1 day · why the patient hesitates.']]},
+  why:'An agent can judge Jenny’s 2:44 call in about <b>ten seconds</b>: read the pinned hero, tap the five flags, hit Follow up now — with the stage updated before the phone rings.'},
+
+{ id:'activity', num:'12', title:'Activity — the patient 360',
+  blurb:'Same patient on both sides: William Butcher. Before, his story lived in a temporary slide-over pinned on top of whatever you were doing — calls only, details deferred to CareStack. After, Activity is a full page that assembles calls, texts, voicemails, opportunities, bot calls and tasks into one timeline.',
+  before:{ img:'compare/before/patient-360.png',
+    mks:[[41,6,'A slide-over on top of the Opportunities board — close it and the context is gone; there is no page to come back to.'],
+         [38,13,'Conversation History is calls-only: All / Voicemails / Opportunities / Bot Calls. Texts and tasks live in other modules.'],
+         [50,38,'Events as stacked log entries — badges, tags and IQ blocks, but no thread telling you where this patient’s story stands.'],
+         [83,17,'The panel opens with exits: Open in CareStack, Patient Ledger, Open Scheduler — the drawer defers to another system.'],
+         [80,55,'DOB, insurance, appointments as a label/value wall of equal weight; the outstanding balance sits at the very bottom.']]},
+  after:{ img:'compare/after/12-activity-wb.png',
+    mks:[[30,8,'Arriving from his Opportunity card lands here — breadcrumb keeps the way back: Opportunities / William Butcher / Activity.'],
+         [26,18,'One timeline for everything: calls, voicemails, opportunities, bot calls, tasks and messages — tabs are lenses, not silos.'],
+         [47,46,'The recency divider: “↑ 5 more recent conversations since this opportunity” — the agent instantly knows the story moved on after this call.'],
+         [33,62,'The page auto-scrolls to and highlights the source call — “Warm opportunity · 90% likely to convert” with its reason, exactly where you were sent.'],
+         [64,28,'The newer calls above self-triage: “Nothing to review” vs “Review audio” — attention only where it’s needed.'],
+         [88,14,'The panel leads with behavior-changers: RP chip, $150 due, quick actions.'],
+         [88,30,'The opportunity stage — changeable right here (“Not Converted”), HubSpot-style.'],
+         [88,68,'Appointments and the show-up trust bar — reliability at a glance before promising a slot.'],
+         [88,80.5,'Linked patients — the same household the old drawer listed (William + Steve Harrington), one tap away with live counts.']]},
+  why:'Activity is where trust is won: the agent arrives <b>anchored on the exact call</b> that raised the opportunity, sees at a glance that five newer conversations followed it, and greets William already knowing the balance and the stage — no drawer, no CareStack detour.'},
+
+{ id:'contacts', num:'13', title:'Contacts (Directory)',
+  blurb:'Before: an admin table labeled Beta. After: a phone book that behaves like the one in your pocket.',
+  before:{ img:'compare/before/contacts.png',
+    mks:[[26,14,'Contacts / Groups / Blocked tabs plus three dropdowns — admin furniture for a 14-person list.'],
+         [55,40,'Status pills, group management, edit-per-row: built for configuring, not for calling.']]},
+  after:{ img:'compare/after/11-contacts.png',
+    mks:[[26,21,'Group chips with live counts (14 Everyone · 3 TEST) — groups filter people instead of living in their own tab.'],
+         [21,33.5,'Alphabetical letter sections + colored initial avatars — scan like a phone book.'],
+         [28,40.5,'Row click opens the person’s Activity; call and text sit inline.'],
+         [90.5,11.5,'＋ New contact creates real contacts (typeId and country-code handling verified live).']]},
+  why:'A front desk uses a phone book by first letter and by group — the design finally matches the mental model.'}
+];
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function shot(cls, label, sub, o){
+  var h='<div class="shot '+cls+'"><span class="tag">'+label+' <small>'+sub+'</small></span><div class="imgwrap"><img src="'+o.img+'" loading="lazy" alt="">';
+  o.mks.forEach(function(m,i){h+='<span class="mk" style="left:'+m[0]+'%;top:'+m[1]+'%">'+(i+1)+'</span>';});
+  h+='</div><div class="legend">';
+  o.mks.forEach(function(m,i){h+='<div class="li"><span class="dot '+(cls==='before'?'c':'g')+'">'+(i+1)+'</span><span>'+m[2]+'</span></div>';});
+  h+='</div></div>';
+  return h;
+}
+var doc='', toc='';
+S.forEach(function(s){
+  toc+='<a href="#'+s.id+'">'+s.num+' · '+s.title.split('—')[0].trim()+'</a>';
+  doc+='<section class="sec" id="'+s.id+'"><div class="sec-head"><span class="sec-num">'+s.num+'</span><h2>'+s.title+'</h2></div><p class="blurb">'+s.blurb+'</p>';
+  if(s.before) doc+=shot('before','Before','current app (1.14.7)',s.before);
+  if(s.beforeNote) doc+='<div class="nobefore"><b>Before:</b> '+s.beforeNote+'</div>';
+  doc+=shot('after','After','v2 prototype · live data',s.after);
+  doc+='<div class="why"><b>Why it matters</b> — '+s.why+'</div></section>';
+});
+document.getElementById('toc').innerHTML=toc;
+document.getElementById('doc').innerHTML=doc;
+
+// highlight the section in view + keep its chip visible in the pinned bar
+(function(){
+  var links = {};
+  document.querySelectorAll('.toc a').forEach(function(a){ links[a.getAttribute('href').slice(1)] = a; });
+  var current = null;
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if (e.isIntersecting) {
+        if (current) current.classList.remove('on');
+        current = links[e.target.id];
+        if (current) { current.classList.add('on');
+          current.scrollIntoView({block:'nearest', inline:'nearest'}); }
+      }
+    });
+  }, {rootMargin:'-15% 0px -70% 0px'});
+  document.querySelectorAll('.sec').forEach(function(s){ io.observe(s); });
+})();
+</script>
+</body>
+</html>
